@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gift Suggestion Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 2rem;
+      background: #f5f7fa;
+    }
+    h1 {
+      color: #5C3BF6;
+    }
+    .chat-info {
+      margin-top: 2rem;
+      background: #fff;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎁 Gift Suggestion Chatbot</h1>
+  <p>Ask me anything about gift ideas! I'm here to help you find the perfect present.</p>
+
+  <div class="chat-info">
+    <strong>Tip:</strong> You can ask things like “Suggest a gift for a 10-year-old who loves art” or “What’s a good anniversary gift for my wife?”
+  </div>
+
+  <!-- 💬 Chatbase Integration Script -->
+  <script>
+    (function(){
+      if (!window.chatbase || window.chatbase("getState") !== "initialized") {
+
+        // Queue messages if chatbot not ready
+        window.chatbase = (...args) => {
+          if (!window.chatbase.q) {
+            window.chatbase.q = [];
+          }
+          window.chatbase.q.push(args);
+        };
+
+        window.chatbase = new Proxy(window.chatbase, {
+          get(target, prop) {
+            if (prop === "q") return target.q;
+            return (...args) => target(prop, ...args);
+          }
+        });
+      }
+
+      const onLoad = function() {
+        const script = document.createElement("script");
+        script.src = "https://www.chatbase.co/embed.min.js";
+        script.id = "1-RyoN_8PeyP_6Cb5ucJI"; // 🧠 Your Chatbase Bot ID
+        script.domain = "www.chatbase.co";
+        document.body.appendChild(script);
+
+        // ✅ Set authenticated user
+        const userId = "123e4567-e89b-12d3-a456-426614174000"; // Replace with actual user ID
+        const userName = "Abhishek Shukla";
+        const userEmail = "abhishek@example.com";
+        const userHash = "your_generated_hash_here"; // Replace with hash from backend
+
+        window.chatbase("setUser", {
+          id: userId,
+          name: userName,
+          email: userEmail,
+          signature: userHash
+        });
+      };
+
+      // Load when page is ready
+      if (document.readyState === "complete") {
+        onLoad();
+      } else {
+        window.addEventListener("load", onLoad);
+      }
+    })();
+  </script>
+
+</body>
+</html>
